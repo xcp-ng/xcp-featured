@@ -1,0 +1,5 @@
+PKG xapi-types xcp.v6
+
+S bin
+
+B _build/default/bin

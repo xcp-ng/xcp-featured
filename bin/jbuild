@@ -1,0 +1,15 @@
+(jbuild_version 1)
+
+(executables
+ ((names (xcp_featured))
+  (libraries (systemd
+              xcp.v6)
+  )
+ )
+)
+
+(install
+ ((section bin)
+  (files ((xcp_featured.exe as v6d)))
+ )
+)
