@@ -1,9 +1,17 @@
 (jbuild_version 1)
 
+(rule
+ ((targets (version.ml))
+  (deps    (../VERSION))
+  (action  (with-stdout-to ${@} (bash "cat ${<} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/")))
+ )
+)
+
 (executables
  ((names (xcp_featured))
   (flags (:standard -safe-string))
   (libraries (systemd
+              xapi-types
               xcp.v6)
   )
  )
