@@ -2,6 +2,7 @@
 
 (executables
  ((names (xcp_featured))
+  (flags (:standard -safe-string))
   (libraries (systemd
               xcp.v6)
   )
