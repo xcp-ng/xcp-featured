@@ -1,5 +1,3 @@
-module Server = V6_interface.Server(V6_server)
-
 let stop signal =
   exit 0
 
@@ -18,7 +16,7 @@ let () =
   let server = Xcp_service.make
     ~path:!V6_interface.default_path
     ~queue_name:!V6_interface.queue_name
-    ~rpc_fn:(Server.process ())
+    ~rpc_fn:(Idl.server V6_server.S.implementation)
     ()
   in
 
