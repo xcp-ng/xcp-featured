@@ -12,7 +12,14 @@ let start server =
   ) () in
   ()
 
+let bind () =
+  let open V6_server in
+  S.apply_edition apply_edition;
+  S.get_editions get_editions;
+  S.get_version get_version
+
 let () =
+  bind ();
   let server = Xcp_service.make
     ~path:!V6_interface.default_path
     ~queue_name:!V6_interface.queue_name
