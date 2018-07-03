@@ -2,7 +2,17 @@ module S = V6_interface.RPC_API(Idl.GenServerExn ())
 
 type context = unit
 
-let editions = ["xcp-ng", ("", "", 0)] (* TODO: real editions *)
+let editions =
+  let open V6_interface in
+  [
+    {
+      title = "xcp-ng";
+      official_title = "xcp-ng";
+      code = "xcp-ng";
+      order = 100;
+    };
+  ] (* TODO: real editions *)
+
 
 type additional_feature =
   | VSwitch
@@ -53,7 +63,7 @@ let additional_params =
       (feature_name, string_of_bool (mode = Positive)))
     keys_of_additional_features
 
-let apply_edition _ dbg edition params =
+let apply_edition dbg edition params =
   let open V6_interface in
   {
     edition_name = "xcp-ng";
@@ -62,6 +72,6 @@ let apply_edition _ dbg edition params =
     experimental_features = [];
   }
 
-let get_editions _ dbg = editions
+let get_editions dbg = editions
 
-let get_version _ dbg = Version.version
+let get_version dbg = Version.version
