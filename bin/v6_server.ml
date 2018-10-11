@@ -13,6 +13,16 @@ let editions =
     };
   ] (* TODO: real editions *)
 
+let unsupported_features =
+  let open Features in
+  [
+    Corosync;
+  ]
+
+let supported_features =
+  List.filter
+    (fun feature -> not (List.mem feature unsupported_features))
+    Features.all_features
 
 type additional_feature =
   | VSwitch
@@ -67,7 +77,7 @@ let apply_edition dbg edition params =
   let open V6_interface in
   {
     edition_name = "xcp-ng";
-    xapi_params  = Features.(to_assoc_list all_features);
+    xapi_params  = Features.to_assoc_list supported_features;
     additional_params = additional_params;
     experimental_features = [];
   }
