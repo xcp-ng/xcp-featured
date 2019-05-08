@@ -1,4 +1,4 @@
-module S = V6_interface.RPC_API(Idl.GenServerExn ())
+module S = V6_interface.RPC_API(Idl.Exn.GenServer ())
 
 type context = unit
 
