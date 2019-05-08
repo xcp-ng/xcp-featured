@@ -12,7 +12,7 @@
   (flags (:standard -safe-string))
   (libraries (systemd
               xapi-types
-              xcp.v6)
+              xapi-idl.v6)
   )
  )
 )
