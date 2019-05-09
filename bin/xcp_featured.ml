@@ -23,7 +23,7 @@ let () =
   let server = Xcp_service.make
     ~path:!V6_interface.default_path
     ~queue_name:!V6_interface.queue_name
-    ~rpc_fn:(Idl.server V6_server.S.implementation)
+    ~rpc_fn:(Idl.Exn.server V6_server.S.implementation)
     ()
   in
 
