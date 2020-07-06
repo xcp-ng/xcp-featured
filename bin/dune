@@ -1,11 +1,11 @@
 (rule
  (targets version.ml)
  (deps
-  (:< ../VERSION))
+  (:version ../VERSION))
  (action
   (with-stdout-to
    %{targets}
-   (bash "cat %{<} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
+   (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
 
 (executables
  (modes byte exe)
