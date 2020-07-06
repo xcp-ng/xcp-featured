@@ -1,11 +1,11 @@
-opam-version: "1.2"
+opam-version: "2.0"
 author: "John Else <john.else@gmail.com>"
 maintainer: "John Else <john.else@gmail.com>"
 homepage: "https://github.com/xcp-ng/xcp-featured"
 bug-reports: "https://github.com/xcp-ng/xcp-featured/issues"
 dev-repo: "git://github.com/xcp-ng/xcp-featured"
 build: [
-  "jbuilder" "build" "-p" name "-j" jobs
+  "dune" "build" "-p" name "-j" jobs
 ]
 depends: [
   "xapi-idl"

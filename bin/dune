@@ -1,0 +1,19 @@
+(rule
+ (targets version.ml)
+ (deps
+  (:version ../VERSION))
+ (action
+  (with-stdout-to
+   %{targets}
+   (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
+
+(executables
+ (modes byte exe)
+ (names xcp_featured)
+ (flags :standard -safe-string)
+ (libraries systemd xapi-types xapi-idl.v6))
+
+(install
+ (section bin)
+ (files
+  (xcp_featured.exe as v6d)))
