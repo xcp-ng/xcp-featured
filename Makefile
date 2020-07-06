@@ -5,7 +5,7 @@ MANDIR ?= /usr/share/man/man1
 .PHONY: build install uninstall clean
 
 build:
-	jbuilder build @install
+	dune build --profile=release @install
 
 install:
 	mkdir -p $(DESTDIR)$(LIBEXECDIR)
@@ -15,4 +15,4 @@ uninstall:
 	rm -f $(DESTDIR)$(LIBEXECDIR)/xcp-featured
 
 clean:
-	jbuilder clean
+	dune clean
