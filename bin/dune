@@ -1,7 +1,7 @@
 (rule
   (targets version.ml)
-  (deps    ../VERSION)
-  (action  (with-stdout-to ${@} (bash "cat ${<} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/")))
+  (deps    (:version ../VERSION))
+  (action  (with-stdout-to %{targets} (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/")))
 )
 
 (executables
