@@ -42,6 +42,7 @@ type additional_feature =
   | BatchHotfixApply
   | ManagementOnVLAN
   | WSProxy
+  | CloudManagement
 
 type orientation = Positive | Negative
 
@@ -64,6 +65,7 @@ let keys_of_additional_features =
     BatchHotfixApply, (Negative, "restrict_batch_hotfix_apply");
     ManagementOnVLAN, (Negative, "restrict_management_on_vlan");
     WSProxy, (Negative, "restrict_ws_proxy");
+    CloudManagement, (Negative, "restrict_cloud_management");
   ]
 
 let additional_params =
