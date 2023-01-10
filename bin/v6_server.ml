@@ -43,6 +43,7 @@ type additional_feature =
   | ManagementOnVLAN
   | WSProxy
   | CloudManagement
+  | VTPM
 
 type orientation = Positive | Negative
 
@@ -66,6 +67,7 @@ let keys_of_additional_features =
     ManagementOnVLAN, (Negative, "restrict_management_on_vlan");
     WSProxy, (Negative, "restrict_ws_proxy");
     CloudManagement, (Negative, "restrict_cloud_management");
+    VTPM, (Negative, "restrict_vtpm");
   ]
 
 let additional_params =
