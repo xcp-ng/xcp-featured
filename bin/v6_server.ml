@@ -88,4 +88,4 @@ let apply_edition dbg edition params =
 
 let get_editions dbg = editions
 
-let get_version dbg = Version.version
+let get_version dbg = [("dbv", Version.version)]
