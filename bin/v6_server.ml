@@ -44,6 +44,7 @@ type additional_feature =
   | WSProxy
   | CloudManagement
   | VTPM
+  | NRPE
 
 type orientation = Positive | Negative
 
@@ -68,6 +69,7 @@ let keys_of_additional_features =
     WSProxy, (Negative, "restrict_ws_proxy");
     CloudManagement, (Negative, "restrict_cloud_management");
     VTPM, (Negative, "restrict_vtpm");
+    NRPE, (Negative, "restrict_nrpe");
   ]
 
 let additional_params =
