@@ -27,17 +27,13 @@ let () =
     ()
   in
 
-  Xcp_service.maybe_daemonize ~start_fn:(fun () ->
-    Debug.set_facility Syslog.Local5;
+  Debug.set_facility Syslog.Local5;
+  Debug.disable "http";
+  handle_shutdown ();
+  Debug.with_thread_associated "main" start server;
 
-    Debug.disable "http";
-
-    handle_shutdown ();
-
-    Debug.with_thread_associated "main" start server;
-
-    ignore (Daemon.notify Daemon.State.Ready)
-  ) ();
+  let module Daemon = Xapi_stdext_unix.Unixext.Daemon in
+  ignore (Daemon.systemd_notify Daemon.State.Ready);
 
   while true do
     Thread.delay 300.;
