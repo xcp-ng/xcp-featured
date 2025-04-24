@@ -11,7 +11,7 @@
  (modes byte exe)
  (names xcp_featured)
  (flags :standard -safe-string)
- (libraries systemd xapi-types xapi-idl.v6))
+ (libraries xapi-types xapi-idl.v6))
 
 (install
  (section bin)
