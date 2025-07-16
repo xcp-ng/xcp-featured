@@ -1,5 +1,5 @@
-let stop signal =
-  exit 0
+let stop _ =
+  exit 1
 
 let handle_shutdown () =
   Sys.set_signal Sys.sigterm (Sys.Signal_handle stop);

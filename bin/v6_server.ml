@@ -79,7 +79,7 @@ let additional_params =
       (feature_name, string_of_bool (mode = Positive)))
     keys_of_additional_features
 
-let apply_edition dbg edition params =
+let apply_edition _dbg _edition _params =
   let open V6_interface in
   {
     edition_name = "xcp-ng";
@@ -88,6 +88,6 @@ let apply_edition dbg edition params =
     experimental_features = [];
   }
 
-let get_editions dbg = editions
+let get_editions _dbg = editions
 
-let get_version dbg = [("dbv", Version.version)]
+let get_version _dbg = [("dbv", Version.version)]
