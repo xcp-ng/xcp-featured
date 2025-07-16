@@ -2,10 +2,13 @@ BINDIR ?= /usr/bin
 LIBEXECDIR ?= /usr/libexec
 MANDIR ?= /usr/share/man/man1
 
-.PHONY: build install uninstall clean
+.PHONY: build check install uninstall clean
 
 build:
 	dune build --profile=release @install
+
+check:
+	dune build @check
 
 install:
 	mkdir -p $(DESTDIR)$(LIBEXECDIR)
