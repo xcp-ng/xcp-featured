@@ -30,7 +30,6 @@ module Additional = struct
     | ManagementOnVLAN
     | WSProxy
     | CloudManagement
-    | VTPM
     | NRPE
   [@@deriving enum]
 
@@ -77,8 +76,6 @@ module Additional = struct
         ("restrict_ws_proxy", Negative)
     | CloudManagement ->
         ("restrict_cloud_management", Negative)
-    | VTPM ->
-        ("restrict_vtpm", Negative)
     | NRPE ->
         ("restrict_nrpe", Negative)
 
