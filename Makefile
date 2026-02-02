@@ -2,7 +2,7 @@ BINDIR ?= /usr/bin
 LIBEXECDIR ?= /usr/libexec
 MANDIR ?= /usr/share/man/man1
 
-.PHONY: build check install uninstall clean
+.PHONY: build check format install uninstall clean
 
 build:
 	dune build --profile=release @install
@@ -16,6 +16,9 @@ install:
 
 uninstall:
 	rm -f $(DESTDIR)$(LIBEXECDIR)/xcp-featured
+
+format:
+	dune build @fmt --auto-promote
 
 clean:
 	dune clean
