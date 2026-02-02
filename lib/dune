@@ -1,12 +1,3 @@
-(rule
- (targets version.ml)
- (deps
-  (:version ../VERSION))
- (action
-  (with-stdout-to
-   %{targets}
-   (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
-
 (library
  (name xcp_ng)
  (modules v6)

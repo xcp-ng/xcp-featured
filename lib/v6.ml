@@ -98,10 +98,9 @@ end
 
 let xapi_params = Features.to_assoc_list supported_features
 
-let apply_edition _dbg _edition _params =
-  let open V6_interface in
+let apply_edition _dbg edition _params =
   {
-    edition_name= "xcp-ng"
+    V6_interface.edition_name= edition
   ; xapi_params
   ; additional_params= Additional.params
   ; experimental_features= []
@@ -109,4 +108,7 @@ let apply_edition _dbg _edition _params =
 
 let get_editions _dbg = editions
 
-let get_version _dbg = [("dbv", Version.version)]
+(* This is supposed to be the burn-in date of the current XCP-ng release, or
+   the Release To Manufacture date: the Date-Based Version. The commit that
+   introduces it to xen-api uses "2009.0201" *)
+let get_version _dbg = [("dbv", "2026.0202")]
