@@ -1,7 +1,5 @@
 module S = V6_interface.RPC_API (Idl.Exn.GenServer ())
 
-type context = unit
-
 let editions =
   let open V6_interface in
   [{title= "xcp-ng"; official_title= "xcp-ng"; code= "xcp-ng"; order= 100}]
@@ -16,68 +14,100 @@ let supported_features =
     (fun feature -> not (List.mem feature unsupported_features))
     Features.all_features
 
-type additional_feature =
-  | VSwitch
-  | Lab
-  | Stage
-  | StorageLink
-  | StorageLinkSiteRecovery
-  | WebSelfService
-  | WebSelfServiceManager
-  | HotfixApply
-  | ExportResourceData
-  | ReadCaching
-  | CIFS
-  | HealthCheck
-  | XCM
-  | VMMemoryIntrospection
-  | BatchHotfixApply
-  | ManagementOnVLAN
-  | WSProxy
-  | CloudManagement
-  | VTPM
-  | NRPE
+module Additional = struct
+  type feature =
+    | VSwitch
+    | Lab
+    | Stage
+    | StorageLink
+    | StorageLinkSiteRecovery
+    | WebSelfService
+    | WebSelfServiceManager
+    | HotfixApply
+    | ExportResourceData
+    | ReadCaching
+    | CIFS
+    | HealthCheck
+    | XCM
+    | VMMemoryIntrospection
+    | BatchHotfixApply
+    | ManagementOnVLAN
+    | WSProxy
+    | CloudManagement
+    | VTPM
+    | NRPE
+  [@@deriving enum]
 
-type orientation = Positive | Negative
+  (** Positive features are enabled when they are present (true), Negatives are
+    disabled when present (true) *)
+  type orientation = Positive | Negative
 
-let keys_of_additional_features =
-  [
-    (VSwitch, (Negative, "restrict_vswitch_controller"))
-  ; (Lab, (Negative, "restrict_lab"))
-  ; (Stage, (Negative, "restrict_stage"))
-  ; (StorageLink, (Negative, "restrict_storagelink"))
-  ; (StorageLinkSiteRecovery, (Negative, "restrict_storagelink_site_recovery"))
-  ; (WebSelfService, (Negative, "restrict_web_selfservice"))
-  ; (WebSelfServiceManager, (Negative, "restrict_web_selfservice_manager"))
-  ; (HotfixApply, (Negative, "restrict_hotfix_apply"))
-  ; (ExportResourceData, (Negative, "restrict_export_resource_data"))
-  ; (ReadCaching, (Negative, "restrict_read_caching"))
-  ; (CIFS, (Negative, "restrict_cifs"))
-  ; (HealthCheck, (Negative, "restrict_health_check"))
-  ; (XCM, (Negative, "restrict_xcm"))
-  ; (VMMemoryIntrospection, (Negative, "restrict_vm_memory_introspection"))
-  ; (BatchHotfixApply, (Negative, "restrict_batch_hotfix_apply"))
-  ; (ManagementOnVLAN, (Negative, "restrict_management_on_vlan"))
-  ; (WSProxy, (Negative, "restrict_ws_proxy"))
-  ; (CloudManagement, (Negative, "restrict_cloud_management"))
-  ; (VTPM, (Negative, "restrict_vtpm"))
-  ; (NRPE, (Negative, "restrict_nrpe"))
-  ]
+  let enable = function Positive -> true | Negative -> false
 
-let additional_params =
-  (* Turn on all additional features. *)
-  List.map
-    (fun (_, (mode, feature_name)) ->
-      (feature_name, string_of_bool (mode = Positive))
+  let props_of_feature = function
+    | VSwitch ->
+        ("restrict_vswitch_controller", Negative)
+    | Lab ->
+        ("restrict_lab", Negative)
+    | Stage ->
+        ("restrict_stage", Negative)
+    | StorageLink ->
+        ("restrict_storagelink", Negative)
+    | StorageLinkSiteRecovery ->
+        ("restrict_storagelink_site_recovery", Negative)
+    | WebSelfService ->
+        ("restrict_web_selfservice", Negative)
+    | WebSelfServiceManager ->
+        ("restrict_web_selfservice_manager", Negative)
+    | HotfixApply ->
+        ("restrict_hotfix_apply", Negative)
+    | ExportResourceData ->
+        ("restrict_export_resource_data", Negative)
+    | ReadCaching ->
+        ("restrict_read_caching", Negative)
+    | CIFS ->
+        ("restrict_cifs", Negative)
+    | HealthCheck ->
+        ("restrict_health_check", Negative)
+    | XCM ->
+        ("restrict_xcm", Negative)
+    | VMMemoryIntrospection ->
+        ("restrict_vm_memory_introspection", Negative)
+    | BatchHotfixApply ->
+        ("restrict_batch_hotfix_apply", Negative)
+    | ManagementOnVLAN ->
+        ("restrict_management_on_vlan", Negative)
+    | WSProxy ->
+        ("restrict_ws_proxy", Negative)
+    | CloudManagement ->
+        ("restrict_cloud_management", Negative)
+    | VTPM ->
+        ("restrict_vtpm", Negative)
+    | NRPE ->
+        ("restrict_nrpe", Negative)
+
+  let all_features =
+    let length = max_feature - min_feature + 1 in
+    let start = min_feature in
+    List.init length (fun i -> feature_of_enum (i + start) |> Option.get)
+
+  let params =
+    (* Turn on all additional features. *)
+    all_features
+    |> List.map (fun feature ->
+        feature |> props_of_feature |> fun (feature_name, mode) ->
+        (feature_name, string_of_bool (enable mode))
     )
-    keys_of_additional_features
+end
+
+let xapi_params = Features.to_assoc_list supported_features
 
 let apply_edition _dbg _edition _params =
   let open V6_interface in
   {
     edition_name= "xcp-ng"
-  ; xapi_params= Features.to_assoc_list supported_features
-  ; additional_params
+  ; xapi_params
+  ; additional_params= Additional.params
   ; experimental_features= []
   }
 

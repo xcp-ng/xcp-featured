@@ -11,7 +11,11 @@
  (modes byte exe)
  (names xcp_featured)
  (flags :standard -safe-string)
- (libraries xapi-types xapi-idl.v6))
+ (libraries xapi-types xapi-idl.v6)
+ (preprocess
+  (per_module
+   ((pps ppx_deriving.enum)
+    V6_server))))
 
 (install
  (section bin)
