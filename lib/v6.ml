@@ -1,13 +1,9 @@
-module S = V6_interface.RPC_API (Idl.Exn.GenServer ())
-
 let editions =
   let open V6_interface in
   [{title= "xcp-ng"; official_title= "xcp-ng"; code= "xcp-ng"; order= 100}]
 (* TODO: real editions *)
 
-let unsupported_features =
-  let open Features in
-  [Corosync]
+let unsupported_features = Features.[Corosync]
 
 let supported_features =
   List.filter
@@ -40,7 +36,7 @@ module Additional = struct
 
   (** Positive features are enabled when they are present (true), Negatives are
     disabled when present (true) *)
-  type orientation = Positive | Negative
+  type orientation = Positive | Negative [@@warning "-unused-constructor"]
 
   let enable = function Positive -> true | Negative -> false
 

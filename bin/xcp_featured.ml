@@ -1,3 +1,5 @@
+module Server = V6_interface.RPC_API (Idl.Exn.GenServer ())
+
 let stop _ = exit 1
 
 let handle_shutdown () =
@@ -12,17 +14,16 @@ let start server =
   ()
 
 let bind () =
-  let open V6_server in
-  S.apply_edition apply_edition ;
-  S.get_editions get_editions ;
-  S.get_version get_version
+  Server.apply_edition Xcp_ng.V6.apply_edition ;
+  Server.get_editions Xcp_ng.V6.get_editions ;
+  Server.get_version Xcp_ng.V6.get_version
 
 let () =
   bind () ;
   let server =
     Xcp_service.make ~path:!V6_interface.default_path
       ~queue_name:!V6_interface.queue_name
-      ~rpc_fn:(Idl.Exn.server V6_server.S.implementation)
+      ~rpc_fn:(Idl.Exn.server Server.implementation)
       ()
   in
 

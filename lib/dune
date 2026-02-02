@@ -1,0 +1,17 @@
+(rule
+ (targets version.ml)
+ (deps
+  (:version ../VERSION))
+ (action
+  (with-stdout-to
+   %{targets}
+   (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
+
+(library
+ (name xcp_ng)
+ (modules v6)
+ (libraries xapi-types xapi-idl.v6)
+ (preprocess
+  (per_module
+   ((pps ppx_deriving.enum)
+    V6))))
