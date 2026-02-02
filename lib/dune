@@ -6,3 +6,8 @@
   (per_module
    ((pps ppx_deriving.enum)
     V6))))
+
+(test
+ (name v6_test)
+ (modules v6_test)
+ (libraries alcotest xapi-types xcp_ng))

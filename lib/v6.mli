@@ -7,3 +7,9 @@ val get_editions : string -> V6_interface.edition list
 
 val get_version : 'a -> (string * string) list
 (** [get_version dbg] returns a list of version-related string for XCP-ng *)
+
+(*/*)
+
+module Additional : sig
+  val params : (string * string) list
+  (** test-only value *) end
