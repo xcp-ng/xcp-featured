@@ -1,3 +1,5 @@
+module L = Debug.Make (struct let name = __MODULE__ end)
+
 let editions =
   let open V6_interface in
   [{title= "xcp-ng"; official_title= "xcp-ng"; code= "xcp-ng"; order= 100}]
@@ -95,12 +97,65 @@ end
 
 let xapi_params = Features.to_assoc_list supported_features
 
+module type Directory = sig val root : string end
+
+(** Reads custom features from a directory, used to read experimental features,
+    and is parametrised to be able to test the logic. *)
+module Custom (D : Directory) : sig val list : unit -> (string * bool) list
+end = struct
+  let ( let* ) = Result.bind
+
+  let dir_contents () =
+    (try Unix.mkdir D.root 0o700 with Unix.(Unix_error (EEXIST, _, _)) -> ()) ;
+    try Sys.readdir D.root |> Result.ok with e -> Error e
+
+  let full_path feat = Filename.concat D.root feat
+
+  let enabled_of_contents = function
+    | "1" ->
+        Ok true
+    | "0" ->
+        Ok false
+    | v ->
+        let msg =
+          Printf.sprintf {|%s: "0" or "1" expected, found %s|} __FUNCTION__ v
+        in
+        Error (Invalid_argument msg)
+
+  let props_of_feature name =
+    try
+      let contents = Xapi_stdext_unix.Unixext.string_of_file (full_path name) in
+      let* enabled = enabled_of_contents contents in
+      Ok (name, enabled)
+    with e -> Error e
+
+  let log_exn __LOC exn = L.info "%s: %s" __LOC (Printexc.to_string exn)
+
+  let option_of f x =
+    match f x with Ok v -> Some v | Error e -> log_exn __LOC__ e ; None
+
+  let available () =
+    let* feature_names = dir_contents () in
+    feature_names
+    |> Array.to_list
+    |> List.filter_map (option_of props_of_feature)
+    |> Result.ok
+
+  let list () =
+    let error e = log_exn __LOC__ e ; [] in
+    Result.fold ~ok:Fun.id ~error (available ())
+end
+
+module Experimental = Custom (struct
+  let root = "/etc/xcp/experimental-features.d"
+end)
+
 let apply_edition _dbg edition _params =
   {
     V6_interface.edition_name= edition
   ; xapi_params
   ; additional_params= Additional.params
-  ; experimental_features= []
+  ; experimental_features= Experimental.list ()
   }
 
 let get_editions _dbg = editions

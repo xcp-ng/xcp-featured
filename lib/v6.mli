@@ -10,6 +10,13 @@ val get_version : 'a -> (string * string) list
 
 (*/*)
 
+(* *** test-only bindings *** *)
+
 module Additional : sig
   val params : (string * string) list
   (** test-only value *) end
+
+module type Directory = sig val root : string end
+
+module Custom : functor (D : Directory) -> sig
+  val list : unit -> (string * bool) list end
