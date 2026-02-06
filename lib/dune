@@ -11,3 +11,11 @@
  (name v6_test)
  (modules v6_test)
  (libraries alcotest xapi-types xcp_ng))
+
+(executable
+ (name experimental_test)
+ (modules experimental_test)
+ (libraries xapi-stdext-unix xcp_ng))
+
+(cram
+ (deps experimental_test.exe))
