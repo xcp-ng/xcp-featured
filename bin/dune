@@ -1,17 +1,8 @@
-(rule
- (targets version.ml)
- (deps
-  (:version ../VERSION))
- (action
-  (with-stdout-to
-   %{targets}
-   (bash "cat %{version} | sed s/^/\"let version = \"\\\"/ | sed s/$/\\\"/"))))
-
 (executables
  (modes byte exe)
  (names xcp_featured)
  (flags :standard -safe-string)
- (libraries xapi-types xapi-idl.v6))
+ (libraries xapi-idl.v6 xcp_ng))
 
 (install
  (section bin)

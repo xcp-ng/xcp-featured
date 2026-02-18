@@ -1,0 +1,21 @@
+(library
+ (name xcp_ng)
+ (modules v6)
+ (libraries xapi-types xapi-idl.v6)
+ (preprocess
+  (per_module
+   ((pps ppx_deriving.enum)
+    V6))))
+
+(test
+ (name v6_test)
+ (modules v6_test)
+ (libraries alcotest xapi-types xcp_ng))
+
+(executable
+ (name experimental_test)
+ (modules experimental_test)
+ (libraries xapi-stdext-unix xcp_ng))
+
+(cram
+ (deps experimental_test.exe))
