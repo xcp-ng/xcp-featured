@@ -18,7 +18,7 @@ module Additional : sig
 
 module type Directory = sig val root : string end
 
-module Custom : functor (D : Directory) -> sig
+module Custom : functor (_ : Directory) -> sig
   val list : unit -> (string * bool) list end
 
 val apply_edition_test :
